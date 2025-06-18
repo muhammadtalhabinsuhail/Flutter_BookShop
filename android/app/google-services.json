@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "660871350723",
+    "project_id": "homeshop-a864",
+    "storage_bucket": "homeshop-a864.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:660871350723:android:500a027ad392f0e1a41576",
+        "android_client_info": {
+          "package_name": "homeshop.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKe9bbyrxf0st2_tMv7YTGLpl4wmhjXgE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:660871350723:android:3abe02961a9a8a6ba41576",
+        "android_client_info": {
+          "package_name": "project.com.project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKe9bbyrxf0st2_tMv7YTGLpl4wmhjXgE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
