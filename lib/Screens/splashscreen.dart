@@ -1,161 +1,174 @@
-//
-// import 'package:flutter/material.dart';
-// import 'dart:async';
-// class SplashScreen extends StatefulWidget {
-//   const SplashScreen({super.key});
-//
-//   @override
-//   State<SplashScreen> createState() => _SplashScreenState();
-// }
-//
-// class _SplashScreenState extends State<SplashScreen> {
-//   void initState() {
-//     super.initState();
-//     Timer(Duration(seconds: 3), () {
-//       Navigator.pushReplacementNamed(context, "/products");
-//       // Navigator.pushReplacementNamed(context, "/products");
-//       // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Products()));
-//       Navigator.pushNamed(context, "/products");
-//     });
-//   }
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.white, // splash background colorMore actions
-//       body: SingleChildScrollView(
-//         child: Center(
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               Icon(Icons.local_mall_outlined, size: 300, color: Colors.blue),
-//
-//
-//               SizedBox(height: 20),
-//               Text(
-//                 'Ecommerce Project',
-//                 style: TextStyle(
-//                     fontSize: 30,
-//                     fontWeight: FontWeight.bold,
-//                     color: Colors.yellow
-//                 ),
-//               ),
-//
-//
-//             ],
-//           ),
-//         ),
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//       ),
-//
-//
-//
-//
-//
-//
-//
-//
-//     );
-//   }
-// }
-//
-//
-//
-//
-//
 import 'package:flutter/material.dart';
-import 'dart:async';
+import 'package:project/Screens/Customer/Login/LoginScreen.dart';
+import 'package:project/Screens/Customer/Home/HomeView.dart';
+import 'package:project/Screens/SignUp.dart';
+import 'package:project/Screens/Customer/SignUp/SignUpScreen.dart';
+// import 'login_screen.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
-
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Timer(Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, "/products");
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+              children: [
 
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                child: IntrinsicHeight(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Spacer(), // Push content to center
-                      Icon(Icons.local_mall_outlined, size: 200, color: Colors.blue),
-                      SizedBox(height: 20),
-                      Text(
-                        'Ecommerce Project',
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.yellow,
+
+
+                Row(
+                  children: [
+                    Container(
+                      width: 60,
+                      height: 50,
+                      decoration:  const BoxDecoration(
+                        image: DecorationImage(
+                          image:AssetImage(
+                              "logo.png"
+
+                          ),
                         ),
                       ),
-                      Spacer(), // Push footer to bottom
-
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        child: Column(
-
-                          children: [
-                            Text(
-                              '© 2025 YourBrand. All rights reserved.',
-                              style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                            ),
-                            SizedBox(height: 5),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                TextButton(
-                                  onPressed: () {},
-                                  child: Text("Privacy Policy"),
-                                ),
-                                Text("|"),
-                                TextButton(
-                                  onPressed: () {},
-                                  child: Text("Terms"),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                    ),
+                    const SizedBox(width: 8),
+                    const Text(
+                      'READIUM',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20,),
+                Container(
+                  height: 400,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                    child: Center(
+                    child:
+                    Image(image: AssetImage('Splash.jpg'), height: 400,width: double.infinity,),
+        
                   ),
                 ),
-              ),
-            );
-          },
+                const SizedBox(height: 24),
+
+
+
+              const SizedBox(height: 24),
+
+                // Buttons Section
+                Column(
+                  children: [
+                    // Create Account Button
+                    SizedBox(
+                      width: double.infinity,
+                      height: 56,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SignUpScreen(),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        child: const Text(
+                          'Create your Account, Now!',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    // Login Button
+                    SizedBox(
+                      width: double.infinity,
+                      height: 56,
+                      child: OutlinedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                          );
+                        },
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.black,
+                          side: const BorderSide(color: Colors.grey, width: 1),
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        child: const Text(
+                          'Sign in to your account',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    // See Books Button (Additional)
+                    SizedBox(
+                      width: double.infinity,
+                      height: 56,
+                      child: OutlinedButton(
+                        onPressed: () {
+                          // Navigate to books
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>  LoginScreen(),
+                            ),
+                          );
+                        },
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.black,
+                          side: const BorderSide(color: Colors.grey, width: 1),
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                        ),
+                        child: const Text(
+                          'See our collections',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+
+              ],
+            ),
+          ),
         ),
       ),
     );
