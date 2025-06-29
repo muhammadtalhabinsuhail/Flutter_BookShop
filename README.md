@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # project
 
 Aptech Learning
@@ -14,3 +15,7 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+# Flutter_BookShop
+Aptech 4th semester project
+>>>>>>> f0833c77e66b811d2f5eadd0815b8ea1c01caa64
