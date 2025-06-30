@@ -46,6 +46,7 @@ class ProfileUpdateController {
         UsersModel? user = await UsersRepository.getUserById(currentUser.uid);
         if (user != null) {
           usernameController.text = user.userName;
+          print("This will be user name:"+user.userName);
           emailController.text = user.email;
           _profileImageBase64 = user.profile;
         }

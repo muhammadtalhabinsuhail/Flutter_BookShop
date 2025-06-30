@@ -13,11 +13,11 @@ import 'Screens/Admin/AdminDashboard/AdminDashboardView.dart';
 import 'Screens/Admin/Catagory/AddCatagory.dart';
 import 'Screens/Admin/Catagory/category_management_screen.dart';
 import 'Screens/Admin/UsersList/user_info_screen.dart';
-import 'Screens/Customer/Cart/CartScreen.dart';
 import 'Screens/Customer/CustomerProfileUpdate/customer_profile_update_screen.dart';
+import 'Screens/Customer/Home/home_view.dart';
 import 'Screens/EmailSender.dart';
 import 'Screens/Customer/Login/LoginScreen.dart';
-import 'Screens/Customer/Home/HomeView.dart';
+
 import 'Screens/Customer/SignUp/SignUpScreen.dart';
 
 import 'firebase_options.dart';
@@ -25,7 +25,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:project/Screens/Customer/Home/HomeView.dart';
+
 
 
 void main() async {
@@ -59,12 +59,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        '/login': (context) => LoginScreen(),
+       '/admin' : (context) => AdminDashboard(selectedIndex: 0)
+      },
       title: 'Book App',
       theme: ThemeData(
         primarySwatch: Colors.grey,
         fontFamily: 'Inter',
       ),
-       home:AdminDashboard(selectedIndex: 0,),// CustomerProfileUpdateScreen(),// AdminDashboard(selectedIndex: 0,),
+       home:SplashScreen(),// CustomerProfileUpdateScreen(),// AdminDashboard(selectedIndex: 0,),
       debugShowCheckedModeBanner: false,
     );
   }

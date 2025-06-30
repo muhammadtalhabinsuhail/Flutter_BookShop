@@ -4,7 +4,7 @@ import 'package:project/Screens/Admin/AdminDashboard/AdminDashboardView.dart';
 import 'package:project/Screens/Admin/Catagory/AddCatagory.dart';
 import 'package:project/Screens/Admin/UsersList/customer_lists_screen.dart';
 
-import '../Customer/Home/HomeView.dart';
+import '../Customer/Home/home_view.dart';
 import 'Catagory/category_management_screen.dart';
 
 class NavItem {
@@ -91,12 +91,12 @@ class _AdminDrawerState extends State<AdminDrawer> {
                   child: ListTile(
                     leading: Icon(
                       isSelected ? item.activeIcon : item.icon,
-                      color: isSelected ? Colors.blue : Colors.grey[600],
+                      color: isSelected ?Colors.blue[600]: Colors.grey[600],
                     ),
                     title: Text(
                       item.label,
                       style: TextStyle(
-                        color: isSelected ? Colors.blue : Colors.grey[700],
+                        color: isSelected ? Colors.blue[600] : Colors.grey[700],
                         fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                       ),
                     ),

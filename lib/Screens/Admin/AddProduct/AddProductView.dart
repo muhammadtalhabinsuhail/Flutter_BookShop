@@ -10,7 +10,7 @@ import 'package:project/Screens/Admin/AddProduct/AddProductCustom.dart';
 import 'package:project/Screens/Models/ProductModel.dart';
 import 'package:project/Screens/Admin/AdminDrawer.dart';
 
-import '../../Customer/Home/HomeView.dart';
+import '../../Customer/Home/home_view.dart';
 import '../AdminDashboard/AdminDashboardView.dart';
 
 
@@ -59,7 +59,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.blue[600],
         foregroundColor: Colors.white,
         title: Container(
           child: Padding(
@@ -67,9 +67,9 @@ class _ProductFormPageState extends State<ProductFormPage> {
             child: Row(
 
               children: [
-                Image.asset("logo.png",height: 45,),
-                SizedBox(width: 10,),
-                Text("Readium")
+                // Image.asset("logo.png",height: 45,),
+                // SizedBox(width: 10,),
+                Text("Product Management")
               ],
             ),
           ),

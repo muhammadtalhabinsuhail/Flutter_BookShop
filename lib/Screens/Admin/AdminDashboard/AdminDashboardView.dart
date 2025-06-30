@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:project/Screens/Admin/AddProduct/AddProductView.dart';
-import 'package:project/Screens/Customer/Home/HomeView.dart';
 
+
+import '../../Customer/Home/home_view.dart';
 import '../AdminDrawer.dart';
 
 class AdminDashboard extends StatefulWidget {
@@ -55,7 +56,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
       theme: _isDarkMode ? _darkTheme : _lightTheme,
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.blue[600],
           foregroundColor: Colors.white,
           title: Container(
             child: Padding(
@@ -63,9 +64,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
               child: Row(
 
                 children: [
-                  Image.asset("logo.png",height: 45,),
-                  SizedBox(width: 10,),
-                  Text("Readium")
+                  // Image.asset("logo.png",height: 45,),
+                  // SizedBox(width: 10,),
+                  Text("Product Management")
                 ],
               ),
             ),

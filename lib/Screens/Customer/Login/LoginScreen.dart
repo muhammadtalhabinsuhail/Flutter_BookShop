@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project/Screens/Customer/Home/HomeView.dart';
 
+import '../Home/home_view.dart';
 import 'LoginController.dart';
 
 class LoginScreen extends StatefulWidget {

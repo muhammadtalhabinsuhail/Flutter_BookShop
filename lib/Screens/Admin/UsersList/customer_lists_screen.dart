@@ -106,12 +106,9 @@ class _CustomerListsScreenState extends State<CustomerListsScreen> {
             color: Colors.white,
           ),
         ),
-        backgroundColor: Colors.blue,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
+        backgroundColor: Colors.blue[600],
+
+
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh, color: Colors.white),

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:project/Screens/Customer/CustomerProfileUpdate/profile_image_picker.dart';
 import 'package:project/Screens/Customer/CustomerProfileUpdate/profile_update_controller.dart';
 import '../../Admin/AdminDashboard/AdminDashboardView.dart';
-import '../Cart/CartScreen.dart';
-import '../Home/HomeView.dart';
+
+import '../Cart/cart_screen.dart';
+import '../Home/home_view.dart';
+import '../Wishlist/wishlist_screen.dart';
 import 'app_logo_header.dart';
 import 'custom_input_field.dart';
 
@@ -223,6 +225,125 @@ class _CustomerProfileUpdateScreenState extends State<CustomerProfileUpdateScree
                 ),
               ),
             ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   currentIndex: _selectedIndex,
+      //   onTap: (index) {
+      //     setState(() {
+      //       _selectedIndex = index;
+      //     });
+      //
+      //     // Navigation logic
+      //     switch (index) {
+      //       case 0:
+      //         Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+      //         break;
+      //       case 1:
+      //       //Navigator.push(context, MaterialPageRoute(builder: (context) => TopTrendsScreen()));
+      //         break;
+      //       case 2:
+      //         Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen()));
+      //         break;
+      //       case 3:
+      //         Navigator.push(context, MaterialPageRoute(builder: (context) => AdminDashboard(selectedIndex: 0,)));
+      //         break;
+      //       case 4:
+      //         Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerProfileUpdateScreen()));
+      //         break;
+      //     }
+      //   },
+      //   type: BottomNavigationBarType.fixed,
+      //   selectedItemColor: Colors.black,
+      //   unselectedItemColor: Colors.grey,
+      //   showSelectedLabels: true,
+      //   showUnselectedLabels: true,
+      //   items: [
+      //     const BottomNavigationBarItem(
+      //       icon: Icon(Icons.home_outlined),
+      //       activeIcon: Icon(Icons.home,color: Colors.black,),
+      //       label: 'Home',
+      //
+      //     ),
+      //
+      //     const BottomNavigationBarItem(
+      //       icon: Icon(Icons.shopping_bag_outlined),
+      //       label: 'Top Trends',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Stack(
+      //         children: [
+      //           const Icon(Icons.shopping_cart_outlined),
+      //           if (_cartItemsCount > 0)
+      //             Positioned(
+      //               right: 0,
+      //               top: 0,
+      //               child: Container(
+      //                 padding: const EdgeInsets.all(2),
+      //                 decoration: BoxDecoration(
+      //                   color: Colors.red.shade400,
+      //                   borderRadius: BorderRadius.circular(10),
+      //                 ),
+      //                 constraints: const BoxConstraints(
+      //                   minWidth: 16,
+      //                   minHeight: 16,
+      //                 ),
+      //                 child: Text(
+      //                   '$_cartItemsCount',
+      //                   style: const TextStyle(
+      //                     color: Colors.white,
+      //                     fontSize: 10,
+      //                     fontWeight: FontWeight.bold,
+      //                   ),
+      //                   textAlign: TextAlign.center,
+      //                 ),
+      //               ),
+      //             ),
+      //         ],
+      //       ),
+      //       activeIcon: Stack(
+      //         children: [
+      //           const Icon(Icons.shopping_cart),
+      //           if (_cartItemsCount > 0)
+      //             Positioned(
+      //               right: 0,
+      //               top: 0,
+      //               child: Container(
+      //                 padding: const EdgeInsets.all(2),
+      //                 decoration: BoxDecoration(
+      //                   color: Colors.red,
+      //                   borderRadius: BorderRadius.circular(10),
+      //                 ),
+      //                 constraints: const BoxConstraints(
+      //                   minWidth: 16,
+      //                   minHeight: 16,
+      //                 ),
+      //                 child: Text(
+      //                   '$_cartItemsCount',
+      //                   style: const TextStyle(
+      //                     color: Colors.white,
+      //                     fontSize: 10,
+      //                     fontWeight: FontWeight.bold,
+      //                   ),
+      //                   textAlign: TextAlign.center,
+      //                 ),
+      //               ),
+      //             ),
+      //         ],
+      //       ),
+      //       label: 'Cart',
+      //     ),
+      //     const BottomNavigationBarItem(
+      //       icon: Icon(Icons.bookmark_outline),
+      //       activeIcon: Icon(Icons.bookmark),
+      //       label: 'Saved',
+      //     ),
+      //     const BottomNavigationBarItem(
+      //       icon: Icon(Icons.person_outline),
+      //       activeIcon: Icon(Icons.person),
+      //       label: 'Profile',
+      //     ),
+      //   ],
+      // ),
+
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) {
@@ -230,22 +351,34 @@ class _CustomerProfileUpdateScreenState extends State<CustomerProfileUpdateScree
             _selectedIndex = index;
           });
 
-          // Navigation logic
           switch (index) {
             case 0:
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Home()),
+              );
               break;
             case 1:
-            //Navigator.push(context, MaterialPageRoute(builder: (context) => TopTrendsScreen()));
+            // Navigate to Top Trends
               break;
             case 2:
-              Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CartScreen()),
+              );
               break;
             case 3:
-              Navigator.push(context, MaterialPageRoute(builder: (context) => AdminDashboard(selectedIndex: 0,)));
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const WishlistScreen()),
+              );
               break;
             case 4:
-              Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerProfileUpdateScreen()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const   CustomerProfileUpdateScreen()),
+              );
+
               break;
           }
         },
@@ -257,11 +390,9 @@ class _CustomerProfileUpdateScreenState extends State<CustomerProfileUpdateScree
         items: [
           const BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home,color: Colors.black,),
+            activeIcon: Icon(Icons.home, color: Colors.black),
             label: 'Home',
-
           ),
-
           const BottomNavigationBarItem(
             icon: Icon(Icons.shopping_bag_outlined),
             label: 'Top Trends',
@@ -330,9 +461,9 @@ class _CustomerProfileUpdateScreenState extends State<CustomerProfileUpdateScree
             label: 'Cart',
           ),
           const BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark_outline),
-            activeIcon: Icon(Icons.bookmark),
-            label: 'Saved',
+            icon: Icon(Icons.favorite_outline),
+            activeIcon: Icon(Icons.favorite, color: Colors.red),
+            label: 'Wishlist',
           ),
           const BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),
