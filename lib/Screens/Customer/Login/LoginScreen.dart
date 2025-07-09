@@ -319,9 +319,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: 35,
                         height: 35,
                       ),
-                    onPressed: () {
-                      // Handle Google sign in
-                    },
+                    onPressed: () => signInWithGoogle(context),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: Colors.black,
                       side: BorderSide(color: Colors.grey[300]!),
