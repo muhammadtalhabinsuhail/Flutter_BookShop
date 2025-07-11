@@ -4,6 +4,7 @@ import 'package:project/screen/Admin/AdminDashboard/AdminDashboardView.dart';
 import 'package:project/screen/Admin/AllOrders/all_orders_screen.dart';
 import 'package:project/screen/Admin/Catagory/AddCatagory.dart';
 import 'package:project/screen/Admin/Catagory/category_management_screen.dart';
+import 'package:project/screen/Admin/Customers/admin_panel_screen.dart';
 import 'package:project/screen/Admin/WishList/wishlist_management_screen.dart';
 import 'package:project/screen/customers/Home/home_view.dart';
 import 'package:project/screen/customers/Login/LoginScreen.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
       routes: {
         '/login': (context) => LoginScreen(),
         '/my-orders':(context) => MyOrdersScreen(),
@@ -61,7 +63,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.grey,
         fontFamily: 'Inter',
       ),
-       home:CategoryManagementScreen(),//Home(),//WishlistManagementScreen(selectedIndex: 4),// CustomerProfileUpdateScreen(),// AdminDashboard(selectedIndex: 0,),
+       home:SplashScreen(),//Home(),//WishlistManagementScreen(selectedIndex: 4),// CustomerProfileUpdateScreen(),// AdminDashboard(selectedIndex: 0,),
       debugShowCheckedModeBanner: false,
 
     );
