@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:660871350723:android:f068e0f9e1023f74a41576",
+        "android_client_info": {
+          "package_name": "com.example.bookproj"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKe9bbyrxf0st2_tMv7YTGLpl4wmhjXgE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:660871350723:android:500a027ad392f0e1a41576",
         "android_client_info": {
           "package_name": "homeshop.com"

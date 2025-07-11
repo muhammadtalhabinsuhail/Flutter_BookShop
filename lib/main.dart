@@ -1,25 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:project/Screens/Admin/UsersList/customer_lists_screen.dart';
-import 'package:project/Screens/Login.dart';
-import 'package:project/Screens/SignUp.dart';
-import 'package:project/Screens/ApiProduct.dart';
-import 'package:project/Screens/UserList.dart';
-import 'package:project/Screens/splashscreen.dart';
+import 'package:project/screen/Admin/AdminDashboard/AdminDashboardView.dart';
+import 'package:project/screen/Admin/AllOrders/all_orders_screen.dart';
+import 'package:project/screen/Admin/Catagory/AddCatagory.dart';
+import 'package:project/screen/Admin/Catagory/category_management_screen.dart';
+import 'package:project/screen/Admin/WishList/wishlist_management_screen.dart';
+import 'package:project/screen/customers/Home/home_view.dart';
+import 'package:project/screen/customers/Login/LoginScreen.dart';
+import 'package:project/screen/customers/OrdersTracking/my_orders_screen.dart';
+import 'package:project/screen/splashscreen.dart';
 import 'package:provider/provider.dart';
-
-import 'Screens/Admin/AddProduct/AddProductView.dart';
-import 'Screens/Admin/AdminDashboard/AdminDashboardView.dart';
-import 'Screens/Admin/Catagory/AddCatagory.dart';
-import 'Screens/Admin/Catagory/category_management_screen.dart';
-import 'Screens/Admin/UsersList/user_info_screen.dart';
-import 'Screens/Customer/CustomerProfileUpdate/customer_profile_update_screen.dart';
-import 'Screens/Customer/Home/home_view.dart';
-import 'Screens/EmailSender.dart';
-import 'Screens/Customer/Login/LoginScreen.dart';
-
-import 'Screens/Customer/SignUp/SignUpScreen.dart';
-
 import 'firebase_options.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,23 +43,27 @@ void main() async {
 
 
 
-
-
 class MyApp extends StatelessWidget {
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
         '/login': (context) => LoginScreen(),
-       '/admin' : (context) => AdminDashboard(selectedIndex: 0)
+        '/my-orders':(context) => MyOrdersScreen(),
+         '/admin' : (context) => AdminDashboard(selectedIndex: 0)
       },
       title: 'Book App',
       theme: ThemeData(
         primarySwatch: Colors.grey,
         fontFamily: 'Inter',
       ),
-       home:SplashScreen(),// CustomerProfileUpdateScreen(),// AdminDashboard(selectedIndex: 0,),
+       home:CategoryManagementScreen(),//Home(),//WishlistManagementScreen(selectedIndex: 4),// CustomerProfileUpdateScreen(),// AdminDashboard(selectedIndex: 0,),
       debugShowCheckedModeBanner: false,
+
     );
   }
 }
