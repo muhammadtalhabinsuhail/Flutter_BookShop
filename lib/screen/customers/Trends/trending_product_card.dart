@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:project/screen/model/ProductModel.dart';
+
+import '../Home/add_to_cart_button.dart';
+
 
 class TrendingProductCard extends StatefulWidget {
   final ProductModel product;
@@ -22,6 +27,7 @@ class _TrendingProductCardState extends State<TrendingProductCard>
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
   late Animation<double> _fadeAnimation;
+  bool _isHovered = false;
 
   @override
   void initState() {
@@ -48,8 +54,6 @@ class _TrendingProductCardState extends State<TrendingProductCard>
         return Colors.orange[400]!;
       case 'new':
         return Colors.green[400]!;
-      case 'bestseller':
-        return Colors.purple[400]!;
       default:
         return Colors.blue[400]!;
     }
@@ -61,8 +65,6 @@ class _TrendingProductCardState extends State<TrendingProductCard>
         return '🔥 TRENDING';
       case 'new':
         return '✨ NEW';
-      case 'bestseller':
-        return '⭐ BESTSELLER';
       default:
         return '';
     }
@@ -77,161 +79,186 @@ class _TrendingProductCardState extends State<TrendingProductCard>
           scale: _scaleAnimation.value,
           child: FadeTransition(
             opacity: _fadeAnimation,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
-                    blurRadius: 15,
-                    offset: Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: InkWell(
-                onTap: () {
-                  // TODO: Navigate to product details
-                },
-                borderRadius: BorderRadius.circular(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(16),
-                              ),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(16),
-                              ),
-                              child: Image.network(
-                                widget.product.imgurl,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    Container(
-                                  color: Colors.grey[200],
-                                  child: Icon(
-                                    Icons.image,
-                                    size: 50,
-                                    color: Colors.grey[400],
+            child: MouseRegion(
+              onEnter: (_) => setState(() => _isHovered = true),
+              onExit: (_) => setState(() => _isHovered = false),
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 200),
+                transform: Matrix4.identity()
+                  ..scale(_isHovered ? 1.02 : 1.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(_isHovered ? 0.15 : 0.08),
+                      blurRadius: _isHovered ? 20 : 15,
+                      offset: Offset(0, _isHovered ? 8 : 4),
+                    ),
+                  ],
+                ),
+                child: InkWell(
+                  onTap: () {
+                    // TODO: Navigate to product details
+                  },
+                  borderRadius: BorderRadius.circular(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min, // Prevent overflow
+                    children: [
+                      // Image section - responsive height
+                      Flexible(
+                        flex: 4,
+                        child: Container(
+                          width: double.infinity,
+                          constraints: BoxConstraints(
+                            minHeight: 120,
+                            maxHeight: 200,
+                          ),
+                          child: Stack(
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(16),
+                                  ),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(16),
+                                  ),
+                                  child: Image.memory(
+                                    base64Decode(widget.product.imgurl),
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) =>
+                                        Container(
+                                          color: Colors.grey[200],
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.image,
+                                                size: 35,
+                                                color: Colors.grey[400],
+                                              ),
+                                              SizedBox(height: 4),
+                                              Text(
+                                                'Image not available',
+                                                style: TextStyle(
+                                                  color: Colors.grey[500],
+                                                  fontSize: 10,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                          Positioned(
-                            top: 8,
-                            left: 8,
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 4,
+                              // Type badge
+                              Positioned(
+                                top: 8,
+                                left: 8,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                    vertical: 3,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: _getTypeColor(),
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: _getTypeColor().withOpacity(0.3),
+                                        blurRadius: 4,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Text(
+                                    _getTypeLabel(),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 7,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
                               ),
-                              decoration: BoxDecoration(
-                                color: _getTypeColor(),
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: _getTypeColor().withOpacity(0.3),
-                                    blurRadius: 4,
-                                    offset: Offset(0, 2),
+                            ],
+                          ),
+                        ),
+                      ),
+                      // Content section - flexible height
+                      Flexible(
+                        flex: 3,
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Product name - responsive text
+                              Flexible(
+                                child: Text(
+                                  widget.product.name,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+
+                              SizedBox(height: 6),
+                              // Price section
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          '\$${widget.product.price.toStringAsFixed(2)}',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.green[600],
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        if (widget.product.quantity > 0)
+                                          Text(
+                                            '${widget.product.quantity} in stock',
+                                            style: TextStyle(
+                                              color: Colors.grey[500],
+                                              fontSize: 9,
+                                            ),
+                                          ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
-                              child: Text(
-                                _getTypeLabel(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 8,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              SizedBox(height: 8),
+                              // Add to Cart button - using your custom button
+                              AddToCartButton(
+                                product: widget.product,
+                                onCartUpdated: () {
+                                  // Optional: Handle cart update callback
+                                  print('Cart updated for ${widget.product.name}');
+                                },
                               ),
-                            ),
+                            ],
                           ),
-                          Positioned(
-                            top: 8,
-                            right: 8,
-                            child: Container(
-                              padding: EdgeInsets.all(6),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.9),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.favorite_outline,
-                                size: 16,
-                                color: Colors.grey[600],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.product.name,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              widget.product.description,
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 12,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Spacer(),
-                            Row(
-                              children: [
-                                Text(
-                                  '\$${widget.product.price.toStringAsFixed(2)}',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.green[600],
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Spacer(),
-                                Container(
-                                  padding: EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue[600],
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  child: Icon(
-                                    Icons.add_shopping_cart,
-                                    size: 16,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

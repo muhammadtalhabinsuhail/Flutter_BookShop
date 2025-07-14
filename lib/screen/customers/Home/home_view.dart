@@ -9,6 +9,7 @@ import 'package:project/screen/model/ProductModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
+import '../../Admin/UpdateProduct/update_product_view.dart';
 import '../Cart/cart_controller.dart';
 import '../CustomerProfileUpdate/customer_profile_update_screen.dart';
 import '../Wishlist/animated_product_card.dart';
@@ -58,6 +59,53 @@ class _HomeState extends State<Home> {
 
   bool _isDataInitialized = false;
 
+
+
+
+
+
+
+
+
+
+  // Add these variables to your _HomeState class
+  bool _isAdmin = false;
+  String? _currentUserEmail;
+
+// Add this method to your _HomeState class
+  Future<void> _checkUserRole() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? email = prefs.getString('email');
+
+      if (email != null && email.isNotEmpty) {
+        setState(() {
+          _currentUserEmail = email;
+        });
+
+        // Check user role in Firestore
+        QuerySnapshot userQuery = await FirebaseFirestore.instance
+            .collection('User')
+            .where('Email', isEqualTo: email)
+            .limit(1)
+            .get();
+
+        if (userQuery.docs.isNotEmpty) {
+          String userRole = userQuery.docs.first['Role'] ?? 'Customer';
+          setState(() {
+            _isAdmin = userRole.toLowerCase() == 'admin';
+          });
+        }
+      }
+    } catch (e) {
+      print('Error checking user role: $e');
+      setState(() {
+        _isAdmin = false;
+      });
+    }
+  }
+
+// Call this method in your initState()
   @override
   void initState() {
     super.initState();
@@ -65,11 +113,41 @@ class _HomeState extends State<Home> {
     _futureCategories = _fetchCategories();
     _initializeData();
     _updateCartCount();
+    _checkUserRole(); // Add this line
     ReversecheckoutCartItems(context);
-
-    // Add search listener
     _searchController.addListener(_onSearchChanged);
+
+
+
+
   }
+
+// Update your AnimatedProductCard to include the update icon
+// In your existing AnimatedProductCard widget, modify it to accept an isAdmin parameter
+// and show the update icon when admin is true
+
+// Add this method to handle update navigation
+  void _navigateToUpdateProduct(ProductModel product) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => UpdateProductPage(
+          product: product,
+          selectedIndex: 1, // Adjust based on your navigation
+        ),
+      ),
+    ).then((_) {
+      // Refresh the product list after update
+      setState(() {
+        _futureProducts = _controller.getAllProducts();
+        _initializeData();
+      });
+    });
+  }
+
+
+
+
 
 
 
@@ -326,7 +404,7 @@ print("hi user id $userId");
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => ProductDetailsSheet(
+      builder: (context) => EnhancedProductDetailsSheet(
         product: product,
         onCartUpdated: _updateCartCount,
       ),
@@ -580,7 +658,9 @@ print("hi user id $userId");
                 product: displayProducts[index],
                 onTap: () => _showProductDetails(displayProducts[index]),
                 onCartUpdated: _updateCartCount,
-                isSearchResult: true,
+                isSearchResult: true, // or false for regular categories
+                isAdmin: _isAdmin, // Add this
+                onUpdateTap: () => _navigateToUpdateProduct(displayProducts[index]), // Add this
               );
             },
           ),
@@ -722,6 +802,9 @@ print("hi user id $userId");
                 product: displayProducts[index],
                 onTap: () => _showProductDetails(displayProducts[index]),
                 onCartUpdated: _updateCartCount,
+                isSearchResult: true, // or false for regular categories
+                isAdmin: _isAdmin, // Add this
+                onUpdateTap: () => _navigateToUpdateProduct(displayProducts[index]), // Add this
               );
             },
           ),

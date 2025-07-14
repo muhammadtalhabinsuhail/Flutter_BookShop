@@ -5,7 +5,6 @@ import 'package:project/screen/model/ProductModel.dart';
 
 import '../base_customer_screen.dart';
 
-
 class TrendsScreen extends StatefulWidget {
   @override
   _TrendsScreenState createState() => _TrendsScreenState();
@@ -15,9 +14,8 @@ class _TrendsScreenState extends State<TrendsScreen>
     with TickerProviderStateMixin {
   List<ProductModel> _trendingProducts = [];
   List<ProductModel> _newArrivals = [];
-  List<ProductModel> _bestSellers = [];
   bool _isLoading = true;
-  
+
   late TabController _tabController;
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -25,7 +23,7 @@ class _TrendsScreenState extends State<TrendsScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
     _animationController = AnimationController(
       duration: Duration(milliseconds: 800),
       vsync: this,
@@ -33,27 +31,47 @@ class _TrendsScreenState extends State<TrendsScreen>
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
-    
+
     _loadTrendingData();
   }
 
   Future<void> _loadTrendingData() async {
     try {
-      // Load trending products (you can implement your own logic)
-      QuerySnapshot productsSnapshot = await FirebaseFirestore.instance
+      setState(() {
+        _isLoading = true;
+      });
+
+      // Load trending products - filter by description containing "trending" or "Trending"
+      QuerySnapshot trendingSnapshot = await FirebaseFirestore.instance
           .collection('Books')
-          .limit(20)
           .get();
 
-      List<ProductModel> allProducts = ProductModel.fromQuerySnapshot(productsSnapshot);
-      
+      List<ProductModel> allProducts = ProductModel.fromQuerySnapshot(trendingSnapshot);
+
+      // Filter trending products by description
+      List<ProductModel> trendingFiltered = allProducts.where((product) {
+        return product.description.toLowerCase().contains('trending');
+      }).toList();
+
+      // Load new arrivals - products added in current month
+      DateTime now = DateTime.now();
+      DateTime startOfMonth = DateTime(now.year, now.month, 1);
+      DateTime endOfMonth = DateTime(now.year, now.month + 1, 0, 23, 59, 59);
+
+      QuerySnapshot newArrivalsSnapshot = await FirebaseFirestore.instance
+          .collection('Books')
+          .where('CreatedAt', isGreaterThanOrEqualTo: startOfMonth)
+          .where('CreatedAt', isLessThanOrEqualTo: endOfMonth)
+          .get();
+
+      List<ProductModel> newArrivalsFiltered = ProductModel.fromQuerySnapshot(newArrivalsSnapshot);
+
       setState(() {
-        _trendingProducts = allProducts.take(8).toList();
-        _newArrivals = allProducts.skip(8).take(6).toList();
-        _bestSellers = allProducts.take(6).toList();
+        _trendingProducts = trendingFiltered;
+        _newArrivals = newArrivalsFiltered;
         _isLoading = false;
       });
-      
+
       _animationController.forward();
     } catch (e) {
       print('Error loading trending data: $e');
@@ -71,24 +89,23 @@ class _TrendsScreenState extends State<TrendsScreen>
       body: _isLoading
           ? _buildLoadingState()
           : FadeTransition(
-              opacity: _fadeAnimation,
-              child: Column(
+        opacity: _fadeAnimation,
+        child: Column(
+          children: [
+            _buildTabBar(),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
                 children: [
-                  _buildTabBar(),
-                  Expanded(
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        _buildTrendingTab(),
-                        _buildNewArrivalsTab(),
-                        _buildBestSellersTab(),
-                      ],
-                    ),
-                  ),
+                  _buildTrendingTab(),
+                  _buildNewArrivalsTab(),
                 ],
               ),
             ),
-        bottomNavigationBar: EnhancedBottomNavigation(currentIndex: 1,)
+          ],
+        ),
+      ),
+      bottomNavigationBar: EnhancedBottomNavigation(currentIndex: 1,),
     );
   }
 
@@ -152,7 +169,6 @@ class _TrendsScreenState extends State<TrendsScreen>
         tabs: [
           Tab(text: 'Trending'),
           Tab(text: 'New Arrivals'),
-          Tab(text: 'Best Sellers'),
         ],
       ),
     );
@@ -187,10 +203,6 @@ class _TrendsScreenState extends State<TrendsScreen>
     return _buildProductGrid(_newArrivals, 'new');
   }
 
-  Widget _buildBestSellersTab() {
-    return _buildProductGrid(_bestSellers, 'bestseller');
-  }
-
   Widget _buildProductGrid(List<ProductModel> products, String type) {
     if (products.isEmpty) {
       return _buildEmptyState(type);
@@ -198,20 +210,52 @@ class _TrendsScreenState extends State<TrendsScreen>
 
     return RefreshIndicator(
       onRefresh: _loadTrendingData,
-      child: GridView.builder(
-        padding: EdgeInsets.all(16),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.75,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-        ),
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          return TrendingProductCard(
-            product: products[index],
-            index: index,
-            type: type,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Enhanced responsive grid calculation
+          int crossAxisCount;
+          double childAspectRatio;
+          double horizontalPadding;
+
+          if (constraints.maxWidth < 600) {
+            // Mobile: 2 columns
+            crossAxisCount = 2;
+            childAspectRatio = 0.68; // Adjusted for better fit
+            horizontalPadding = 12;
+          } else if (constraints.maxWidth < 900) {
+            // Tablet: 3 columns
+            crossAxisCount = 3;
+            childAspectRatio = 0.72;
+            horizontalPadding = 16;
+          } else {
+            // Desktop: 4 columns
+            crossAxisCount = 4;
+            childAspectRatio = 0.75;
+            horizontalPadding = 20;
+          }
+
+          return GridView.builder(
+            padding: EdgeInsets.fromLTRB(
+                horizontalPadding,
+                16,
+                horizontalPadding,
+                100 // Extra bottom padding to prevent overflow
+            ),
+            physics: AlwaysScrollableScrollPhysics(), // Ensure scrollability
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
+              childAspectRatio: childAspectRatio,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 16,
+            ),
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              return TrendingProductCard(
+                product: products[index],
+                index: index,
+                type: type,
+              );
+            },
           );
         },
       ),
@@ -222,17 +266,12 @@ class _TrendsScreenState extends State<TrendsScreen>
     IconData icon;
     String title;
     String subtitle;
-    
+
     switch (type) {
       case 'new':
         icon = Icons.new_releases;
         title = 'No New Arrivals';
         subtitle = 'Check back soon for new products';
-        break;
-      case 'bestseller':
-        icon = Icons.star;
-        title = 'No Best Sellers';
-        subtitle = 'Popular products will appear here';
         break;
       default:
         icon = Icons.local_fire_department;

@@ -9,6 +9,7 @@ import 'package:project/screen/Admin/WishList/wishlist_management_screen.dart';
 import 'package:project/screen/customers/Home/home_view.dart';
 import 'package:project/screen/customers/Login/LoginScreen.dart';
 import 'package:project/screen/customers/OrdersTracking/my_orders_screen.dart';
+import 'package:project/screen/customers/Trends/trends_screen.dart';
 import 'package:project/screen/splashscreen.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
@@ -63,7 +64,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.grey,
         fontFamily: 'Inter',
       ),
-       home:SplashScreen(),//Home(),//WishlistManagementScreen(selectedIndex: 4),// CustomerProfileUpdateScreen(),// AdminDashboard(selectedIndex: 0,),
+       home:TrendsScreen(),//Home(),//WishlistManagementScreen(selectedIndex: 4),// CustomerProfileUpdateScreen(),// AdminDashboard(selectedIndex: 0,),
       debugShowCheckedModeBanner: false,
 
     );
