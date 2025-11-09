@@ -1,7 +1,7 @@
 <<<<<<< HEAD
 # project
+For Aptech Learning 
 
-Aptech Learning
 
 ## Getting Started
 
@@ -17,5 +17,5 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 =======
 # Flutter_BookShop
-Aptech 4th semester project
+For Aptech Learning Sir Owais (UK Client) 
 >>>>>>> f0833c77e66b811d2f5eadd0815b8ea1c01caa64
